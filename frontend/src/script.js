@@ -1,54 +1,39 @@
-// ===== THEME =====
-function setTheme(isDark) {
-  const app = document.getElementById("app");
 
-  if (isDark) {
-    document.body.classList.add("dark");
-    localStorage.setItem("theme", "dark");
-  } else {
-    document.body.classList.remove("dark");
-    localStorage.setItem("theme", "light");
-  }
-}
-
-function toggleTheme() {
-  const isDark = document.body.classList.contains("dark");
-  setTheme(!isDark);
-}
-
-// загрузка темы
-window.addEventListener("load", () => {
-  const saved = localStorage.getItem("theme");
-
-  if (saved === "dark") {
-    setTheme(true);
-  }
-});
-
-
-// ====== STORAGE ======
+// ================= STORAGE =================
 let notes = JSON.parse(localStorage.getItem("notes")) || [];
 let habitsHistory = JSON.parse(localStorage.getItem("habitsHistory")) || [];
+let profile = JSON.parse(localStorage.getItem("profile")) || {};
+let avatar = localStorage.getItem("avatar") || "";
 
-function saveData() {
+// ================= SAVE =================
+function saveNotes() {
   localStorage.setItem("notes", JSON.stringify(notes));
+}
+
+function saveHabits() {
   localStorage.setItem("habitsHistory", JSON.stringify(habitsHistory));
 }
 
-// ===== PAGE =====
+function saveProfileData(data) {
+  localStorage.setItem("profile", JSON.stringify(data));
+}
+
+function saveAvatar(data) {
+  localStorage.setItem("avatar", data);
+}
+
+// ================= NAV =================
 function openPage(pageId) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.getElementById(pageId).classList.add("active");
-
-  if (pageId === "stats") updateStats();
 }
 
-// ===== DATE =====
+// ================= DATE =================
 function getToday() {
   return new Date().toISOString().split("T")[0];
 }
 
-// ===== PROFILE / NOTES / HABITS (оставил твою логику без изменений)
+// ================= PHOTO =================
 function changePhoto() {
   document.getElementById("fileInput").click();
 }
@@ -58,54 +43,81 @@ document.getElementById("fileInput").addEventListener("change", function () {
   if (!file) return;
 
   const reader = new FileReader();
-  reader.onload = e => {
+  reader.onload = function (e) {
     document.getElementById("avatar").src = e.target.result;
-    localStorage.setItem("avatar", e.target.result);
+    saveAvatar(e.target.result);
   };
   reader.readAsDataURL(file);
 });
 
+// ================= PROFILE =================
 function saveProfile() {
   const name = document.getElementById("nameInput").value;
   const age = document.getElementById("ageInput").value;
 
-  localStorage.setItem("profile", JSON.stringify({ name, age }));
+  const data = { name, age };
+  saveProfileData(data);
+
+  document.getElementById("displayName").textContent =
+    name ? `${name}, ${age} лет` : "Имя";
+
   alert("Профиль сохранен!");
 }
 
-// NOTES
+// ================= NOTES =================
 function addNote() {
-  const title = document.getElementById("noteTitle").value;
-  const text = document.getElementById("noteText").value;
+  const title = document.getElementById("noteTitle").value.trim();
+  const text = document.getElementById("noteText").value.trim();
 
   if (!title && !text) return;
 
-  const note = { title, text, date: getToday() };
+  const note = {
+    title,
+    text,
+    date: getToday()
+  };
+
   notes.push(note);
-  saveData();
+  saveNotes();
 
-  const div = document.createElement("div");
-  div.className = "note";
-  div.innerHTML = `<h4>${title}</h4><p>${text}</p>`;
+  renderNote(note);
 
-  document.getElementById("notesList").appendChild(div);
+  document.getElementById("noteTitle").value = "";
+  document.getElementById("noteText").value = "";
 }
 
-// HABITS
-let current = 0, step = 0, unit = "", target = 0, habitName = "";
+function renderNote(note) {
+  const el = document.createElement("div");
+  el.className = "note";
+  el.innerHTML = `
+    <h4>${note.title}</h4>
+    <p>${note.text}</p>
+    <small>${note.date}</small>
+  `;
+  document.getElementById("notesList").appendChild(el);
+}
+
+// ================= HABITS =================
+let current = 0;
+let step = 0;
+let unit = "";
+let target = 0;
+let habitName = "";
 
 function createHabit() {
   habitName = document.getElementById("habitName").value;
-  target = +document.getElementById("habitTarget").value;
-  step = +document.getElementById("habitStep").value;
+  target = parseFloat(document.getElementById("habitTarget").value);
+  step = parseFloat(document.getElementById("habitStep").value);
   unit = document.getElementById("habitUnit").value;
+
+  if (!habitName || !step || !unit) return;
 
   current = 0;
 
-  document.getElementById("habitBlock").style.display = "block";
   document.getElementById("habitTitle").textContent = habitName;
-
   updateHabitText();
+
+  document.getElementById("habitBlock").style.display = "block";
 }
 
 function increaseHabit() {
@@ -115,72 +127,70 @@ function increaseHabit() {
 
 function updateHabitText() {
   document.getElementById("habitProgress").textContent =
-    `${current} / ${target} ${unit}`;
+    `Сегодня: ${current} ${unit} / ${target} ${unit}`;
 }
 
 function saveHabit() {
-  habitsHistory.push({ name: habitName, value: current, date: getToday() });
-  saveData();
-  alert("Сохранено");
+  habitsHistory.push({
+    name: habitName,
+    value: current,
+    date: getToday()
+  });
+
+  saveHabits();
+
+  alert("Прогресс сохранен!");
 }
 
-// ===== SLEEP =====
-let sleepData = JSON.parse(localStorage.getItem("sleep")) || [];
-
-function saveSleep() {
-  const start = new Date(document.getElementById("sleepStart").value);
-  const end = new Date(document.getElementById("sleepEnd").value);
-
-  if (!start || !end || end <= start) return;
-
-  const hours = ((end - start) / 3600000).toFixed(1);
-
-  const item = { start, end, hours };
-  sleepData.push(item);
-
-  localStorage.setItem("sleep", JSON.stringify(sleepData));
-
-  const div = document.createElement("div");
-  div.className = "card";
-  div.innerHTML = `💤 ${hours} ч`;
-
-  document.getElementById("sleepList").appendChild(div);
-}
-
-// ===== WALK =====
-let walkData = JSON.parse(localStorage.getItem("walk")) || [];
-
-function saveWalk() {
-  const start = new Date(document.getElementById("walkStart").value);
-  const end = new Date(document.getElementById("walkEnd").value);
-
-  if (!start || !end || end <= start) return;
-
-  const min = ((end - start) / 60000).toFixed(0);
-
-  const item = { start, end, min };
-  walkData.push(item);
-
-  localStorage.setItem("walk", JSON.stringify(walkData));
-
-  const div = document.createElement("div");
-  div.className = "card";
-  div.innerHTML = `🚶 ${min} мин`;
-
-  document.getElementById("walkList").appendChild(div);
-}
-
-// ===== STATS =====
+// ================= STATS =================
 function updateStats() {
   document.getElementById("statNotes").textContent =
-    "Заметки: " + notes.length;
+    "Заметок: " + notes.length;
+
+  const uniqueHabits = [...new Set(habitsHistory.map(h => h.name))];
 
   document.getElementById("statHabits").textContent =
-    "Привычки: " + habitsHistory.length;
+    "Привычки: " + (uniqueHabits.join(", ") || "-");
 
-  document.getElementById("statSleep").textContent =
-    "Сон записей: " + sleepData.length;
+  const dates = [...new Set(habitsHistory.map(h => h.date))].sort().reverse();
 
-  document.getElementById("statWalk").textContent =
-    "Прогулок: " + walkData.length;
+  let streak = 0;
+
+  for (let i = 0; i < dates.length; i++) {
+    if (i === 0) streak++;
+    else {
+      const d1 = new Date(dates[i - 1]);
+      const d2 = new Date(dates[i]);
+      const diff = (d1 - d2) / (1000 * 60 * 60 * 24);
+
+      if (diff === 1) streak++;
+      else break;
+    }
+  }
+
+  document.getElementById("statStreak").textContent =
+    "Дней подряд: " + streak;
 }
+
+// ================= INIT =================
+window.addEventListener("load", () => {
+
+  // avatar
+  if (avatar) {
+    document.getElementById("avatar").src = avatar;
+  }
+
+  // profile
+  if (profile.name) {
+    document.getElementById("nameInput").value = profile.name;
+    document.getElementById("ageInput").value = profile.age;
+    document.getElementById("displayName").textContent =
+      `${profile.name}, ${profile.age} лет`;
+  }
+
+  // notes render
+  notes.forEach(renderNote);
+
+  // stats init
+  updateStats();
+});
