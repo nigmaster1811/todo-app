@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My App</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="/public/manifest.json">
+  <meta name="theme-color" content="#4CAF50">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app" id="app">
+
+  <!-- ТЕМА -->
+  <div class="theme-toggle">
+    <button onclick="toggleTheme()">🌙 / ☀️ Тема</button>
+  </div>
+
+  <!-- ПРОФИЛЬ -->
+  <div id="profile" class="page active">
+    <h2>Профиль</h2>
+
+    <div class="center">
+      <img id="avatar" src="https://via.placeholder.com/120" />
+
+      <input type="file" id="fileInput" hidden />
+      <button onclick="changePhoto()">Изменить фото</button>
+
+      <h3 id="displayName">Имя</h3>
+
+      <input id="nameInput" type="text" placeholder="Введите имя">
+      <input id="ageInput" type="number" placeholder="Возраст">
+
+      <button onclick="saveProfile()">Сохранить</button>
+    </div>
+  </div>
+
+  <!-- ЗАМЕТКИ -->
+  <div id="notes" class="page">
+    <h2>Заметки</h2>
+
+    <div class="center">
+      <input id="noteTitle" placeholder="Заголовок">
+      <textarea id="noteText" placeholder="Текст заметки"></textarea>
+      <button onclick="addNote()">Добавить</button>
+
+      <div id="notesList"></div>
+    </div>
+  </div>
+
+  <!-- ПРИВЫЧКИ -->
+  <div id="habits" class="page">
+    <h2>Привычки</h2>
+
+    <div class="center">
+      <input id="habitName" type="text" placeholder="Название">
+      <input id="habitTarget" type="number" placeholder="Цель">
+      <input id="habitStep" type="number" placeholder="Шаг">
+      <input id="habitUnit" type="text" placeholder="Ед. (л, мин, км)">
+
+      <button onclick="createHabit()">Создать привычку</button>
+
+      <div id="habitBlock" style="display:none;">
+        <h3 id="habitTitle"></h3>
+        <p id="habitProgress"></p>
+        <button onclick="increaseHabit()">+</button>
+        <button onclick="saveHabit()">Сохранить прогресс</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- СОН -->
+  <div id="sleep" class="page">
+    <h2>Сон 💤</h2>
+
+    <div class="center">
+      <input id="sleepStart" type="datetime-local">
+      <input id="sleepEnd" type="datetime-local">
+
+      <button onclick="saveSleep()">Сохранить сон</button>
+
+      <div id="sleepList"></div>
+    </div>
+  </div>
+
+  <!-- ПРОГУЛКА -->
+  <div id="walk" class="page">
+    <h2>Прогулка 🚶</h2>
+
+    <div class="center">
+      <input id="walkStart" type="datetime-local">
+      <input id="walkEnd" type="datetime-local">
+
+      <button onclick="saveWalk()">Сохранить прогулку</button>
+
+      <div id="walkList"></div>
+    </div>
+  </div>
+
+  <!-- СТАТИСТИКА -->
+  <div id="stats" class="page">
+    <h2>Статистика</h2>
+
+    <p id="statNotes"></p>
+    <p id="statHabits"></p>
+    <p id="statSleep"></p>
+    <p id="statWalk"></p>
+
+    <button onclick="updateStats()">Обновить</button>
+  </div>
+
+</div>
+
+<!-- ФИКСИРОВАННАЯ НАВИГАЦИЯ -->
+<div class="nav-bar">
+  <button onclick="openPage('profile')">Профиль</button>
+  <button onclick="openPage('notes')">Заметки</button>
+  <button onclick="openPage('habits')">Привычки</button>
+  <button onclick="openPage('sleep')">Сон</button>
+  <button onclick="openPage('walk')">Прогулка</button>
+  <button onclick="openPage('stats')">Статистика</button>
+</div>
+
+<!-- JS -->
+<script src="script.js"></script>
+
+<!-- Service Worker -->
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/public/sw.js")
+      .then(() => console.log("SW зарегистрирован"))
+      .catch(err => console.log("SW ошибка", err));
+  }
+</script>
+
+</body>
+</html>
