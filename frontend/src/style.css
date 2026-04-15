@@ -12,8 +12,10 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  padding-bottom: 90px; /* место под навигацию */
 }
 
+/* ===== страницы ===== */
 .page {
   display: none;
   padding: 20px;
@@ -23,6 +25,7 @@ body {
   display: block;
 }
 
+/* центрирование */
 .center {
   display: flex;
   flex-direction: column;
@@ -30,33 +33,43 @@ body {
   gap: 10px;
 }
 
+/* аватар */
 img {
   width: 120px;
   height: 120px;
   border-radius: 50%;
 }
 
+/* input / textarea */
 input, textarea {
   width: 90%;
   padding: 10px;
   border-radius: 8px;
   border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
+/* ===== КНОПКИ (СВЕТЛАЯ ТЕМА ФИКС) ===== */
 button {
   padding: 10px;
-  background: #4CAF50;
+  background: #2e7d32; /* темнее → лучше контраст */
   color: white;
   border: none;
   width: 90%;
   border-radius: 8px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 button:hover {
   opacity: 0.9;
 }
 
+button:active {
+  transform: scale(0.97);
+}
+
+/* заметки */
 .note {
   width: 90%;
   background: #eee;
@@ -65,19 +78,37 @@ button:hover {
   border-radius: 8px;
 }
 
-.nav {
-  display: flex;
+/* ===== НАВИГАЦИЯ (ИСПРАВЛЕННАЯ) ===== */
+.nav-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+
+  padding: 8px;
+  background: #ffffff;
   border-top: 1px solid #ccc;
-  margin-top: 20px;
+  box-sizing: border-box;
 }
 
-.nav button {
-  flex: 1;
-  background: #eee;
-  color: black;
+/* кнопки навигации */
+.nav-bar button {
+  width: 100%;
+  padding: 8px;
+  font-size: 12px;
+
+  background: #f0f0f0;
+  color: #111;
+
+  border: none;
+  border-radius: 8px;
 }
 
-/* карточки */
+/* карточки (сон/прогулка) */
 .card {
   width: 90%;
   background: #eee;
@@ -113,53 +144,27 @@ button:hover {
   background: #2a2a2a;
 }
 
-.dark .nav button {
-  background: #2a2a2a;
-  color: white;
-}
-
-/* переключатель темы */
-.theme-toggle {
-  display: flex;
-  justify-content: center;
-  padding: 10px;
-}
-
-@media (max-width: 500px) {
-  .app {
-    max-width: 100%;
-  }
-}
-/* ===== фиксированная нижняя навигация ===== */
-.nav-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  background: #eee;
-  border-top: 1px solid #ccc;
-}
-
-.nav-bar button {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
-
-/* чтобы контент не прятался под меню */
-.app {
-  padding-bottom: 60px;
-}
-
-/* тёмная тема */
+/* навигация в тёмной теме */
 .dark .nav-bar {
   background: #1e1e1e;
   border-top: 1px solid #333;
 }
 
 .dark .nav-bar button {
+  background: #2a2a2a;
   color: white;
+}
+
+/* тема кнопка */
+.theme-toggle {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+/* адаптив */
+@media (max-width: 500px) {
+  .app {
+    max-width: 100%;
+  }
 }
