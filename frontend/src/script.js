@@ -1,4 +1,3 @@
-
 // ================= STORAGE =================
 let notes = JSON.parse(localStorage.getItem("notes")) || [];
 let habitsHistory = JSON.parse(localStorage.getItem("habitsHistory")) || [];
@@ -175,12 +174,10 @@ function updateStats() {
 // ================= INIT =================
 window.addEventListener("load", () => {
 
-  // avatar
   if (avatar) {
     document.getElementById("avatar").src = avatar;
   }
 
-  // profile
   if (profile.name) {
     document.getElementById("nameInput").value = profile.name;
     document.getElementById("ageInput").value = profile.age;
@@ -188,9 +185,111 @@ window.addEventListener("load", () => {
       `${profile.name}, ${profile.age} лет`;
   }
 
-  // notes render
   notes.forEach(renderNote);
 
-  // stats init
   updateStats();
 });
+
+
+// ================= ===== ДОБАВЛЕНО (НЕ ТРОГАЯ ОСНОВУ) ===== =================
+
+
+// ===== THEME =====
+function toggleTheme() {
+  document.body.classList.toggle("dark");
+
+  const isDark = document.body.classList.contains("dark");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+}
+
+window.addEventListener("load", () => {
+  const theme = localStorage.getItem("theme");
+
+  if (theme === "dark") {
+    document.body.classList.add("dark");
+  }
+});
+
+
+// ===== TIME CALC =====
+function calculateDuration(start, end) {
+  const s = new Date(start);
+  const e = new Date(end);
+
+  const diff = (e - s) / (1000 * 60 * 60);
+  return diff.toFixed(2);
+}
+
+
+// ================= SLEEP =================
+function saveSleep() {
+  const start = document.getElementById("sleepStart").value;
+  const end = document.getElementById("sleepEnd").value;
+
+  if (!start || !end) return;
+
+  const duration = calculateDuration(start, end);
+
+  const data = {
+    start,
+    end,
+    duration,
+    date: getToday()
+  };
+
+  let sleep = JSON.parse(localStorage.getItem("sleep")) || [];
+  sleep.push(data);
+  localStorage.setItem("sleep", JSON.stringify(sleep));
+
+  renderSleep();
+}
+
+function renderSleep() {
+  const sleep = JSON.parse(localStorage.getItem("sleep")) || [];
+
+  document.getElementById("sleepList").innerHTML = "";
+
+  sleep.forEach(s => {
+    const el = document.createElement("div");
+    el.className = "card";
+    el.innerText = `Сон: ${s.duration}ч`;
+    document.getElementById("sleepList").appendChild(el);
+  });
+}
+
+
+// ================= WALK =================
+function saveWalk() {
+  const start = document.getElementById("walkStart").value;
+  const end = document.getElementById("walkEnd").value;
+
+  if (!start || !end) return;
+
+  const duration = calculateDuration(start, end);
+
+  const data = {
+    start,
+    end,
+    duration,
+    date: getToday()
+  };
+
+  let walk = JSON.parse(localStorage.getItem("walk")) || [];
+  walk.push(data);
+  localStorage.setItem("walk", JSON.stringify(walk));
+
+  renderWalk();
+}
+
+function renderWalk() {
+  const walk = JSON.parse(localStorage.getItem("walk")) || [];
+
+  document.getElementById("walkList").innerHTML = "";
+
+  walk.forEach(w => {
+    const el = document.createElement("div");
+    el.className = "card";
+    el.innerText = `Прогулка: ${w.duration}ч`;
+    document.getElementById("walkList").appendChild(el);
+  });
+}
