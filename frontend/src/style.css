@@ -12,10 +12,9 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding-bottom: 90px; /* место под навигацию */
+  padding-bottom: 90px;
 }
 
-/* ===== страницы ===== */
 .page {
   display: none;
   padding: 20px;
@@ -25,7 +24,6 @@ body {
   display: block;
 }
 
-/* центрирование */
 .center {
   display: flex;
   flex-direction: column;
@@ -33,14 +31,12 @@ body {
   gap: 10px;
 }
 
-/* аватар */
 img {
   width: 120px;
   height: 120px;
   border-radius: 50%;
 }
 
-/* input / textarea */
 input, textarea {
   width: 90%;
   padding: 10px;
@@ -49,10 +45,9 @@ input, textarea {
   box-sizing: border-box;
 }
 
-/* ===== КНОПКИ (СВЕТЛАЯ ТЕМА ФИКС) ===== */
 button {
   padding: 10px;
-  background: #2e7d32; /* темнее → лучше контраст */
+  background: #2e7d32;
   color: white;
   border: none;
   width: 90%;
@@ -78,7 +73,6 @@ button:active {
   border-radius: 8px;
 }
 
-/* ===== НАВИГАЦИЯ (ИСПРАВЛЕННАЯ) ===== */
 .nav-bar {
   position: fixed;
   bottom: 0;
@@ -95,7 +89,6 @@ button:active {
   box-sizing: border-box;
 }
 
-/* кнопки навигации */
 .nav-bar button {
   width: 100%;
   padding: 8px;
@@ -108,7 +101,6 @@ button:active {
   border-radius: 8px;
 }
 
-/* карточки (сон/прогулка) */
 .card {
   width: 90%;
   background: #eee;
@@ -117,7 +109,6 @@ button:active {
   margin-top: 10px;
 }
 
-/* ===== ТЁМНАЯ ТЕМА ===== */
 .dark {
   background: #121212;
   color: white;
@@ -144,7 +135,6 @@ button:active {
   background: #2a2a2a;
 }
 
-/* навигация в тёмной теме */
 .dark .nav-bar {
   background: #1e1e1e;
   border-top: 1px solid #333;
@@ -155,14 +145,12 @@ button:active {
   color: white;
 }
 
-/* тема кнопка */
 .theme-toggle {
   display: flex;
   justify-content: center;
   padding: 10px;
 }
 
-/* адаптив */
 @media (max-width: 500px) {
   .app {
     max-width: 100%;
