@@ -1,10 +1,10 @@
-// ================= STORAGE =================
+
 let notes = JSON.parse(localStorage.getItem("notes")) || [];
 let habitsHistory = JSON.parse(localStorage.getItem("habitsHistory")) || [];
 let profile = JSON.parse(localStorage.getItem("profile")) || {};
 let avatar = localStorage.getItem("avatar") || "";
 
-// ================= SAVE =================
+
 function saveNotes() {
   localStorage.setItem("notes", JSON.stringify(notes));
 }
@@ -21,18 +21,18 @@ function saveAvatar(data) {
   localStorage.setItem("avatar", data);
 }
 
-// ================= NAV =================
+
 function openPage(pageId) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.getElementById(pageId).classList.add("active");
 }
 
-// ================= DATE =================
+
 function getToday() {
   return new Date().toISOString().split("T")[0];
 }
 
-// ================= PHOTO =================
+
 function changePhoto() {
   document.getElementById("fileInput").click();
 }
@@ -49,7 +49,7 @@ document.getElementById("fileInput").addEventListener("change", function () {
   reader.readAsDataURL(file);
 });
 
-// ================= PROFILE =================
+
 function saveProfile() {
   const name = document.getElementById("nameInput").value;
   const age = document.getElementById("ageInput").value;
@@ -63,7 +63,7 @@ function saveProfile() {
   alert("Профиль сохранен!");
 }
 
-// ================= NOTES =================
+
 function addNote() {
   const title = document.getElementById("noteTitle").value.trim();
   const text = document.getElementById("noteText").value.trim();
@@ -96,7 +96,7 @@ function renderNote(note) {
   document.getElementById("notesList").appendChild(el);
 }
 
-// ================= HABITS =================
+
 let current = 0;
 let step = 0;
 let unit = "";
@@ -141,7 +141,7 @@ function saveHabit() {
   alert("Прогресс сохранен!");
 }
 
-// ================= STATS =================
+
 function updateStats() {
   document.getElementById("statNotes").textContent =
     "Заметок: " + notes.length;
@@ -171,7 +171,7 @@ function updateStats() {
     "Дней подряд: " + streak;
 }
 
-// ================= INIT =================
+
 window.addEventListener("load", () => {
 
   if (avatar) {
@@ -190,11 +190,6 @@ window.addEventListener("load", () => {
   updateStats();
 });
 
-
-// ================= ===== ДОБАВЛЕНО (НЕ ТРОГАЯ ОСНОВУ) ===== =================
-
-
-// ===== THEME =====
 function toggleTheme() {
   document.body.classList.toggle("dark");
 
@@ -211,7 +206,7 @@ window.addEventListener("load", () => {
 });
 
 
-// ===== TIME CALC =====
+
 function calculateDuration(start, end) {
   const s = new Date(start);
   const e = new Date(end);
@@ -220,8 +215,6 @@ function calculateDuration(start, end) {
   return diff.toFixed(2);
 }
 
-
-// ================= SLEEP =================
 function saveSleep() {
   const start = document.getElementById("sleepStart").value;
   const end = document.getElementById("sleepEnd").value;
@@ -258,7 +251,6 @@ function renderSleep() {
 }
 
 
-// ================= WALK =================
 function saveWalk() {
   const start = document.getElementById("walkStart").value;
   const end = document.getElementById("walkEnd").value;
