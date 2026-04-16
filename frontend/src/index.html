@@ -5,11 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My App</title>
 
-  <!-- PWA -->
+
   <link rel="manifest" href="/public/manifest.json">
   <meta name="theme-color" content="#4CAF50">
 
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -17,12 +16,10 @@
 
 <div class="app" id="app">
 
-  <!-- ТЕМА -->
   <div class="theme-toggle">
     <button onclick="toggleTheme()">🌙 / ☀️ Тема</button>
   </div>
 
-  <!-- ПРОФИЛЬ -->
   <div id="profile" class="page active">
     <h2>Профиль</h2>
 
@@ -41,7 +38,6 @@
     </div>
   </div>
 
-  <!-- ЗАМЕТКИ -->
   <div id="notes" class="page">
     <h2>Заметки</h2>
 
@@ -54,7 +50,6 @@
     </div>
   </div>
 
-  <!-- ПРИВЫЧКИ -->
   <div id="habits" class="page">
     <h2>Привычки</h2>
 
@@ -75,7 +70,6 @@
     </div>
   </div>
 
-  <!-- СОН -->
   <div id="sleep" class="page">
     <h2>Сон 💤</h2>
 
@@ -89,7 +83,6 @@
     </div>
   </div>
 
-  <!-- ПРОГУЛКА -->
   <div id="walk" class="page">
     <h2>Прогулка 🚶</h2>
 
@@ -103,7 +96,6 @@
     </div>
   </div>
 
-  <!-- СТАТИСТИКА -->
   <div id="stats" class="page">
     <h2>Статистика</h2>
 
@@ -117,7 +109,6 @@
 
 </div>
 
-<!-- ФИКСИРОВАННАЯ НАВИГАЦИЯ -->
 <div class="nav-bar">
   <button onclick="openPage('profile')">Профиль</button>
   <button onclick="openPage('notes')">Заметки</button>
@@ -127,10 +118,8 @@
   <button onclick="openPage('stats')">Статистика</button>
 </div>
 
-<!-- JS -->
 <script src="script.js"></script>
 
-<!-- Service Worker -->
 <script>
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/public/sw.js")
